@@ -4,7 +4,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: $main-bg;
 }
 
 a {
@@ -15,9 +14,12 @@ a {
 .main {
   font-family: "Inter", sans-serif;
   color: $main-color;
+  background-color: $main-bg;
 }
 
-
+.container {
+  display: flex;
+}
 
 .menuContainer {
   width: 250px;
