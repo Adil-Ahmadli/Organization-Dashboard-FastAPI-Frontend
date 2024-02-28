@@ -2,7 +2,7 @@ import { useState } from "react";
 import DataTable from "../../components/dataTable/DataTable";
 import Add from "../../components/add/Add";
 import { GridColDef } from "@mui/x-data-grid";
-import "./item.scss";
+import "./items.scss";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 90, sortable: false },
