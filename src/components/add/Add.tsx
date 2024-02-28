@@ -29,10 +29,12 @@ const Add = (props: Props) => {
                 <input type={column.type} placeholder={column.field} />
               </div>
             ))}
-          <div className="item">
-            <label> Password </label>
-            <input type="password" />
-          </div>
+          {props.slug === "user" && (
+            <div className="item">
+              <label> Password </label>
+              <input type="password" />
+            </div>
+          )}
           <button>Send</button>
         </form>
       </div>
