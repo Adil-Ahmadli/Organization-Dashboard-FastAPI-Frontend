@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import "./styles/global.scss";
 
 import Items from "./pages/items/Items";
 import Users from "./pages/users/Users";
@@ -7,7 +8,7 @@ import Navbar from "./components/navbar/Navbar";
 import Menu from "./components/menu/Menu";
 import Footer from "./components/footer/Footer";
 import Login from "./pages/login/Login";
-import "./styles/global.scss";
+import Logs from "./pages/logs/Logs";
 
 function App() {
   const Layout = () => {
@@ -35,6 +36,7 @@ function App() {
         { path: "/", element: <Home /> },
         { path: "/items", element: <Items /> },
         { path: "/users", element: <Users /> },
+        { path: "/logs", element: <Logs /> },
       ],
     },
     {
