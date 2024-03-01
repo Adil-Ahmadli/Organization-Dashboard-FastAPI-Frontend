@@ -1,5 +1,9 @@
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import "./styles/global.scss";
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { createTheme } from "@mui/material/styles";
+import { themeSettings } from "./theme";
 
 import Items from "./pages/items/Items";
 import Users from "./pages/users/Users";
@@ -9,6 +13,7 @@ import Menu from "./components/menu/Menu";
 import Footer from "./components/footer/Footer";
 import Login from "./pages/login/Login";
 import Logs from "./pages/logs/Logs";
+import "./styles/global.scss";
 
 function App() {
   const Layout = () => {
@@ -45,7 +50,14 @@ function App() {
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  const mode = useSelector((state: any) => state.mode);
+  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <RouterProvider router={router} />;
+    </ThemeProvider>
+  );
 }
 
 export default App;
