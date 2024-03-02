@@ -18,7 +18,8 @@ const Menu = () => {
         (listItem) => listItem.title !== "Logs"
       );
     } else if (
-      decoded.employee_role === "admin" &&
+      (decoded.employee_role === "admin" ||
+        decoded.employee_role === "superadmin") &&
       menu[1].listItems.length === 2
     ) {
       menu[1].listItems.push({
