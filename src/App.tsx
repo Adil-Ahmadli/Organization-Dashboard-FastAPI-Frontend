@@ -1,10 +1,11 @@
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
 
+import { UserContext } from "./context/UserContext";
 import Items from "./pages/items/Items";
 import Users from "./pages/users/Users";
 import Home from "./pages/home/Home";
@@ -33,31 +34,25 @@ function App() {
     );
   };
 
+  const [token] = useContext(UserContext);
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Layout />,
+      element: token ? <Layout /> : <Login />,
       children: [
-        { path: "/", element: <Home /> },
-        { path: "/items", element: <Items /> },
-        { path: "/users", element: <Users /> },
-        { path: "/logs", element: <Logs /> },
+        { path: "/", element: token ? <Home /> : <Login /> },
+        { path: "/items", element: token ? <Items /> : <Login /> },
+        { path: "/users", element: token ? <Users /> : <Login /> },
+        { path: "/logs", element: token ? <Logs /> : <Login /> },
       ],
     },
     {
       path: "/login",
-      element: <Login />,
+      element: !token ? <Login /> : <Layout />,
     },
   ]);
 
-  const mode = useSelector((state: any) => state.mode);
-  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <RouterProvider router={router} />;
-    </ThemeProvider>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

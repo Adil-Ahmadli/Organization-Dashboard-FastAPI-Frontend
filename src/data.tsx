@@ -12,9 +12,10 @@ export const menu = [
       {
         id: 2,
         title: "Profile",
-        url: "/users/1",
+        url: "/",
         icon: "user.svg",
       },
+      { id: 3, title: "Log out", url: "/users/1", icon: "logout.svg" },
     ],
   },
   {
@@ -36,7 +37,7 @@ export const menu = [
       {
         id: 2,
         title: "Logs",
-        url: "/",
+        url: "/logs",
         icon: "log.svg",
       },
     ],
@@ -50,12 +51,6 @@ export const menu = [
         title: "Elements",
         url: "/",
         icon: "element.svg",
-      },
-      {
-        id: 2,
-        title: "Notes",
-        url: "/",
-        icon: "note.svg",
       },
       {
         id: 3,
@@ -80,12 +75,6 @@ export const menu = [
         title: "Settings",
         url: "/",
         icon: "setting.svg",
-      },
-      {
-        id: 2,
-        title: "Backups",
-        url: "/",
-        icon: "backup.svg",
       },
     ],
   },
