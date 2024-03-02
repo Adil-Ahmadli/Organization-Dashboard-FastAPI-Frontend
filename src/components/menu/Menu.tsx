@@ -15,18 +15,24 @@ const Menu = () => {
 
     if (decoded.employee_role === "user" && menu[1].listItems.length === 3) {
       menu[1].listItems = menu[1].listItems.filter(
-        (listItem) => listItem.title !== "Logs"
+        (listItem) => listItem.title === "Items"
       );
     } else if (
       (decoded.employee_role === "admin" ||
         decoded.employee_role === "superadmin") &&
-      menu[1].listItems.length === 2
+      menu[1].listItems.length === 1
     ) {
       menu[1].listItems.push({
-        id: 3,
+        id: 2,
         title: "Logs",
         url: "/logs",
         icon: "log.svg",
+      });
+      menu[1].listItems.push({
+        id: 3,
+        title: "Users",
+        url: "/users",
+        icon: "user.svg",
       });
     }
   } catch (error) {
