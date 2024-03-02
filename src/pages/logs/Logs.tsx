@@ -53,7 +53,7 @@ const Logs = () => {
   return (
     <div className="logs">
       <div className="info">
-        <h1>Items</h1>
+        <h1>Logs</h1>
       </div>
       <DataTable slug="logs" columns={columns} rows={rows} />
     </div>

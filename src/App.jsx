@@ -15,6 +15,8 @@ import Footer from "./components/footer/Footer";
 import Login from "./pages/login/Login";
 import Logs from "./pages/logs/Logs";
 import "./styles/global.scss";
+import { jwtDecode } from "jwt-decode";
+import "core-js/stable/atob";
 
 function App() {
   const Layout = () => {
@@ -35,6 +37,7 @@ function App() {
   };
 
   const [token] = useContext(UserContext);
+
   const router = createBrowserRouter([
     {
       path: "/",

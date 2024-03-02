@@ -9,12 +9,27 @@ import { jwtDecode } from "jwt-decode";
 const Menu = () => {
   const navigate = useNavigate();
   const [token, setToken] = useContext(UserContext);
-  const decoded = jwtDecode(token);
-  
-  if (decoded.employee_role === "user") {
-    menu[1].listItems = menu[1].listItems.filter(
-      (listItem) => listItem.title !== "Logs"
-    );
+  try {
+    const decoded = jwtDecode(token);
+    console.log(decoded);
+
+    if (decoded.employee_role === "user" && menu[1].listItems.length === 3) {
+      menu[1].listItems = menu[1].listItems.filter(
+        (listItem) => listItem.title !== "Logs"
+      );
+    } else if (
+      decoded.employee_role === "admin" &&
+      menu[1].listItems.length === 2
+    ) {
+      menu[1].listItems.push({
+        id: 3,
+        title: "Logs",
+        url: "/logs",
+        icon: "log.svg",
+      });
+    }
+  } catch (error) {
+    console.log("Error decoding token", error);
   }
 
   const handleLogout = () => {
