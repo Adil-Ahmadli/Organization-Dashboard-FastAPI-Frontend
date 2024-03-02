@@ -1,0 +1,39 @@
+{
+  "email": "superadmin@superadmin.com",
+  "name": "superadmin",
+  "surname": "superadmin",
+  "employee_role": "superadmin",
+  "password": "superadmin"
+}
+
+{
+  "email": "admin@admin.com",
+  "name": "admin",
+  "surname": "admin",
+  "employee_role": "admin",
+  "password": "admin"
+}
+
+{
+  "email": "admin2@admin.com",
+  "name": "admin2",
+  "surname": "admin2",
+  "employee_role": "admin",
+  "password": "admin2"
+}
+
+{
+  "email": "user@user.com",
+  "name": "user",
+  "surname": "user",
+  "employee_role": "user",
+  "password": "user"
+}
+
+{
+  "email": "user2@user.com",
+  "name": "user2",
+  "surname": "user2",
+  "employee_role": "user",
+  "password": "user2"
+}
