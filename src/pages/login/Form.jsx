@@ -90,6 +90,9 @@ const Form = () => {
           body: JSON.stringify(values),
         }
       );
+      console.log("-----------------");
+      console.log(values);
+      console.log("-----------------");
 
       const loggedInUser = await loggedInUserResponse.json();
       onSubmitProps.resetForm();

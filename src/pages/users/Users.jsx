@@ -1,10 +1,11 @@
 import DataTable from "../../components/dataTable/DataTable";
 import "./users.scss";
 import { useContext, useEffect, useState } from "react";
-import Add from "../../components/add/Add";
+import UserAdd from "../../components/add/UserAdd";
 import { UserContext } from "../../context/UserContext";
 import ErrorMessage from "../login/ErrorMessage";
 import { DataArray } from "@mui/icons-material";
+import { jwtDecode } from "jwt-decode";
 
 const columns = [
   { field: "id", headerName: "ID", width: 90, sortable: false },
@@ -47,7 +48,19 @@ const Users = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loaded, setLoaded] = useState(false);
   const [open, setOpen] = useState(false);
+  const [isSuperAdmin, setisSuperAdmin] = useState(false);
 
+  try {
+    const decoded = jwtDecode(token);
+    if (decoded.employee_role === "superadmin" && isSuperAdmin === false) {
+      setisSuperAdmin(true);
+    }
+    if (decoded.employee_role !== "superadmin" && isSuperAdmin === true) {
+      setisSuperAdmin(false);
+    }
+  } catch (error) {
+    console.log("Error decoding token", error);
+  }
   const getUsers = async () => {
     const requestOptions = {
       method: "GET",
@@ -71,20 +84,78 @@ const Users = () => {
     }
   };
 
+  const deleteUser = async (id) => {
+    const requestOptions = {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    };
+
+    const response = await fetch(
+      "http://localhost:8000/api/members/" + id,
+      requestOptions
+    );
+
+    if (!response.ok) {
+      const data = await response.json();
+      setErrorMessage(data.detail);
+    } else {
+      await getUsers();
+      setLoaded(true);
+    }
+  };
+
+  const updateUser = async (row) => {
+    const requestOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({
+        name: row.name,
+        surname: row.surname,
+        active: row.active,
+      }),
+    };
+
+    const response = await fetch(
+      "http://localhost:8000/api/members/" + row.id,
+      requestOptions
+    );
+
+    if (!response.ok) {
+      const data = await response.json();
+      setErrorMessage(data.detail);
+    } else {
+      await getUsers();
+      setLoaded(true);
+    }
+  };
+
   useEffect(() => {
     getUsers();
   }, []);
-  
+
   return (
     <div className="users">
       <div className="info">
         <h1>Users</h1>
-        <button onClick={() => setOpen(true)}>Add new user</button>
+        {isSuperAdmin && (
+          <button onClick={() => setOpen(true)}>Add new user</button>
+        )}
       </div>
       <ErrorMessage message={errorMessage} />
       <br />
-      <DataTable slug="members" columns={columns} rows={users} />
-      {open && <Add slug="member" columns={columns} setOpen={setOpen} />}
+      <DataTable
+        slug="members"
+        columns={columns}
+        rows={users}
+        delete={deleteUser}
+        update={updateUser}
+      />
+      {open && <UserAdd setOpen={setOpen} getUsers={getUsers} />}
     </div>
   );
 };

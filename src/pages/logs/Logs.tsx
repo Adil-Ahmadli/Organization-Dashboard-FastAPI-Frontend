@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import DataTable from "../../components/dataTable/DataTable";
-import Add from "../../components/add/Add";
+import Add from "../../components/add/UserAdd";
 import { GridColDef } from "@mui/x-data-grid";
 import "./logs.scss";
 import { UserContext } from "../../context/UserContext";
@@ -90,7 +90,13 @@ const Logs = () => {
       </div>
       <ErrorMessage message={errorMessage} />
       <br />
-      <DataTable slug="logs" columns={columns} rows={logs} />
+      <DataTable
+        slug="logs"
+        columns={columns}
+        rows={logs}
+        delete={async (id) => {}}
+        update={async (row) => {}}
+      />
     </div>
   );
 };

@@ -1,15 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import DataTable from "../../components/dataTable/DataTable";
-import Add from "../../components/add/Add";
-import { GridColDef } from "@mui/x-data-grid";
+import { GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import "./items.scss";
 import { UserContext } from "../../context/UserContext";
 import ErrorMessage from "../login/ErrorMessage";
+import ItemAdd from "../../components/add/ItemAdd";
+import { jwtDecode } from "jwt-decode";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 90, sortable: false },
   {
-    field: "title",
+    field: "name",
     headerName: "Title",
     width: 150,
     editable: true,
@@ -34,10 +35,25 @@ const columns: GridColDef[] = [
 
 const Items = () => {
   const [open, setOpen] = useState(false);
-  const [token, setToken] = useContext(UserContext);
+  const [token] = useContext(UserContext);
   const [logs, setLogs] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [loaded, setLoaded] = useState(false);
+  const [isAdmin, setisAdmin] = useState(true);
+
+  try {
+    const decoded = jwtDecode(token);
+    console.log(decoded);
+
+    if (decoded.employee_role === "admin" && isAdmin === false) {
+      setisAdmin(true);
+    }
+    if (decoded.employee_role !== "admin" && isAdmin === true) {
+      setisAdmin(false);
+    }
+  } catch (error) {
+    console.log("Error decoding token", error);
+  }
 
   const getItems = async () => {
     const requestOptions = {
@@ -62,6 +78,62 @@ const Items = () => {
     }
   };
 
+  const deleteItem = async (id: number) => {
+    const requestOptions = {
+      method: "DELETE",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": "true",
+        Authorization: "Bearer " + token,
+      },
+    };
+
+    const response = await fetch(
+      `http://localhost:8000/api/items/${id}`,
+      requestOptions
+    );
+    console.log("-----------------");
+    console.log(response);
+
+    console.log("-----------------");
+
+    if (!response.ok) {
+      const data = await response.json();
+      setErrorMessage(data.detail);
+    } else {
+      await getItems();
+      setLoaded(true);
+    }
+  };
+
+  const updateItem = async (row: any) => {
+    const requestOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({
+        name: row.name,
+        surname: row.surname,
+        active: row.active,
+      }),
+    };
+
+    const response = await fetch(
+      "http://localhost:8000/api/items/" + row.id,
+      requestOptions
+    );
+
+    if (!response.ok) {
+      const data = await response.json();
+      setErrorMessage(data.detail);
+    } else {
+      await getItems();
+      setLoaded(true);
+    }
+  };
+
   useEffect(() => {
     getItems();
   }, []);
@@ -70,12 +142,20 @@ const Items = () => {
     <div className="items">
       <div className="info">
         <h1>Items</h1>
-        <button onClick={() => setOpen(true)}>Add new item</button>
+        {!isAdmin && (
+          <button onClick={() => setOpen(true)}>Add new item</button>
+        )}
       </div>
       <ErrorMessage message={errorMessage} />
       <br />
-      <DataTable slug="items" columns={columns} rows={logs} />
-      {open && <Add slug="item" columns={columns} setOpen={setOpen} />}
+      <DataTable
+        slug="items"
+        columns={columns}
+        rows={logs}
+        delete={deleteItem}
+        update={updateItem}
+      />
+      {open && <ItemAdd setOpen={setOpen} getItems={getItems} />}
     </div>
   );
 };

@@ -84,9 +84,9 @@ export const menu = [
       },
       {
         id: 3,
-        title: "Support",
+        title: "Orders",
         url: "/",
-        icon: "support.svg",
+        icon: "order.svg",
       },
     ],
   },
