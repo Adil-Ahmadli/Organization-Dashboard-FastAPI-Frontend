@@ -13,13 +13,12 @@ const Menu = () => {
     const decoded = jwtDecode(token);
     console.log(decoded);
 
-    if (decoded.employee_role === "user" && menu[1].listItems.length === 3) {
+    if (decoded.employee_role === "user" && menu[1].listItems.length >= 3) {
       menu[1].listItems = menu[1].listItems.filter(
         (listItem) => listItem.title === "Items"
       );
     } else if (
-      (decoded.employee_role === "admin" ||
-        decoded.employee_role === "superadmin") &&
+      decoded.employee_role === "admin" &&
       menu[1].listItems.length === 1
     ) {
       menu[1].listItems.push({
@@ -33,6 +32,57 @@ const Menu = () => {
         title: "Users",
         url: "/users",
         icon: "user.svg",
+      });
+    } else if (
+      decoded.employee_role === "admin" &&
+      menu[1].listItems.length === 4
+    ) {
+      menu[1].listItems = menu[1].listItems.filter(
+        (listItem) => listItem.title === "Items"
+      );
+      menu[1].listItems.push({
+        id: 2,
+        title: "Logs",
+        url: "/logs",
+        icon: "log.svg",
+      });
+      menu[1].listItems.push({
+        id: 3,
+        title: "Users",
+        url: "/users",
+        icon: "user.svg",
+      });
+    } else if (
+      decoded.employee_role === "superadmin" &&
+      menu[1].listItems.length === 1
+    ) {
+      menu[1].listItems.push({
+        id: 2,
+        title: "Logs",
+        url: "/logs",
+        icon: "log.svg",
+      });
+      menu[1].listItems.push({
+        id: 3,
+        title: "Users",
+        url: "/users",
+        icon: "user.svg",
+      });
+      menu[1].listItems.push({
+        id: 4,
+        title: "Organization",
+        url: "/organization",
+        icon: "order.svg",
+      });
+    } else if (
+      decoded.employee_role === "superadmin" &&
+      menu[1].listItems.length === 3
+    ) {
+      menu[1].listItems.push({
+        id: 4,
+        title: "Organization",
+        url: "/organization",
+        icon: "order.svg",
       });
     }
   } catch (error) {

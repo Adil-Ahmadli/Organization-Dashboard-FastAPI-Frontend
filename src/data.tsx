@@ -40,6 +40,12 @@ export const menu = [
         url: "/users",
         icon: "user.svg",
       },
+      {
+        id: 4,
+        title: "Organization",
+        url: "/organization",
+        icon: "order.svg",
+      },
     ],
   },
   {

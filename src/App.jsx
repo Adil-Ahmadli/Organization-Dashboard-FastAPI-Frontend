@@ -17,6 +17,7 @@ import Logs from "./pages/logs/Logs";
 import "./styles/global.scss";
 import { jwtDecode } from "jwt-decode";
 import "core-js/stable/atob";
+import Organization from "./pages/Organization/Organization";
 
 function App() {
   const Layout = () => {
@@ -47,6 +48,7 @@ function App() {
         { path: "/items", element: token ? <Items /> : <Login /> },
         { path: "/users", element: token ? <Users /> : <Login /> },
         { path: "/logs", element: token ? <Logs /> : <Login /> },
+        { path: "/organization", element: token ? <Organization /> : <Login /> },
       ],
     },
     {
