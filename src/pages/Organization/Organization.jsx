@@ -11,12 +11,12 @@ const columns = [
   {
     field: "name",
     headerName: "Name",
-    width: 150,
+    width: 250,
     editable: false,
     type: "string",
   },
   {
-    field: "active",
+    field: "is_active",
     headerName: "Status",
     width: 100,
     editable: true,
@@ -50,12 +50,13 @@ const Organization = () => {
     const requestOptions = {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": "true",
         Authorization: "Bearer " + token,
       },
     };
     const response = await fetch(
-      "http://localhost:8000/api/organization",
+      "http://localhost:8000/api/organizations",
       requestOptions
     );
     const data = await response.json();
@@ -77,18 +78,18 @@ const Organization = () => {
         Authorization: "Bearer " + token,
       },
       body: JSON.stringify({
-        active: row.active,
+        is_active: row.is_active,
       }),
     };
 
     const response = await fetch(
-      "http://localhost:8000/api/organization/" + row.id,
+      "http://localhost:8000/api/organizations",
       requestOptions
     );
 
     if (!response.ok) {
-      const data = await response.json();
-      setErrorMessage(data.detail);
+      //const data = await response.json();
+      setErrorMessage(response);
     } else {
       await getItems();
       setLoaded(true);
