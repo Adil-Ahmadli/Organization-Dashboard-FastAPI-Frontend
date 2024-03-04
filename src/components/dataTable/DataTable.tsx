@@ -62,14 +62,15 @@ const DataTable = (props: Props) => {
               <img src="/view.svg" alt="" />
             </button>
           )}
-          {!isAdmin && (
-            <button
-              className="delete"
-              onClick={() => props.delete(params.row.id)}
-            >
-              <img src="/delete.svg" alt="" />
-            </button>
-          )}
+          {!(isAdmin && props.slug === "items") &&
+            props.slug !== "organization" && (
+              <button
+                className="delete"
+                onClick={() => props.delete(params.row.id)}
+              >
+                <img src="/delete.svg" alt="" />
+              </button>
+            )}
         </div>
       );
     },
